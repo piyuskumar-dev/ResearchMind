@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResearchMind · AI Research Agent</title>
+    <!-- Import Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- Marked.js for rendering markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Header -->
+        <header class="hero">
+            <div class="hero-eyebrow">Multi-Agent AI System</div>
+            <h1>Research<span>Mind</span></h1>
+            <p class="hero-sub">
+                Four specialized AI agents collaborate — searching, scraping, writing,
+                and critiquing — to deliver a polished research report on any topic.
+            </p>
+        </header>
+
+        <div class="divider"></div>
+
+        <!-- Main Layout Split -->
+        <main class="main-grid">
+            <!-- Left Side: Inputs & Raw Details -->
+            <section class="left-col">
+                <div class="input-card">
+                    <label for="topic-input" class="input-label">Research Topic</label>
+                    <div class="input-group">
+                        <input type="text" id="topic-input" placeholder="e.g. Quantum computing breakthroughs in 2026" autocomplete="off">
+                        <button id="run-btn">
+                            <span class="btn-text">⚡ Run Research</span>
+                            <span class="btn-spinner hidden"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Suggestions/Chips -->
+                <div class="chips-container">
+                    <span class="chips-label">TRY →</span>
+                    <button class="chip" onclick="setTopic('LLM agents 2026')">LLM agents 2026</button>
+                    <button class="chip" onclick="setTopic('CRISPR gene editing')">CRISPR gene editing</button>
+                    <button class="chip" onclick="setTopic('Fusion energy progress')">Fusion energy progress</button>
+                </div>
+
+                <!-- Status Progress Pipeline -->
+                <div class="pipeline-section">
+                    <h3 class="section-title">Research Pipeline Progress</h3>
+                    
+                    <!-- Step 1 Card -->
+                    <div class="step-card" id="step-search">
+                        <div class="step-header">
+                            <span class="step-num">01</span>
+                            <span class="step-title">Search Agent</span>
+                            <span class="step-status waiting" id="status-search">WAITING</span>
+                        </div>
+                        <p class="step-desc">Gathers recent web information on the topic</p>
+                    </div>
+
+                    <!-- Step 2 Card -->
+                    <div class="step-card" id="step-scrape">
+                        <div class="step-header">
+                            <span class="step-num">02</span>
+                            <span class="step-title">Reader Agent</span>
+                            <span class="step-status waiting" id="status-scrape">WAITING</span>
+                        </div>
+                        <p class="step-desc">Scrapes & extracts deep content from top resources</p>
+                    </div>
+
+                    <!-- Step 3 Card -->
+                    <div class="step-card" id="step-write">
+                        <div class="step-header">
+                            <span class="step-num">03</span>
+                            <span class="step-title">Writer Chain</span>
+                            <span class="step-status waiting" id="status-write">WAITING</span>
+                        </div>
+                        <p class="step-desc">Drafts the structured markdown research report</p>
+                    </div>
+
+                    <!-- Step 4 Card -->
+                    <div class="step-card" id="step-critic">
+                        <div class="step-header">
+                            <span class="step-num">04</span>
+                            <span class="step-title">Critic Chain</span>
+                            <span class="step-status waiting" id="status-critic">WAITING</span>
+                        </div>
+                        <p class="step-desc">Reviews, evaluates, and scores the report</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Side: Live Logs & Results -->
+            <section class="right-col">
+                <!-- Status Logging Console -->
+                <div class="log-console" id="log-console">
+                    <div class="console-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        <span class="console-title">system_logs.log</span>
+                    </div>
+                    <div class="console-body" id="console-output">
+                        Ready. Enter a topic and run the pipeline to start logging...
+                    </div>
+                </div>
+
+                <!-- Accordion for Raw Outputs (Hidden until data is available) -->
+                <div class="raw-data-accordions hidden" id="raw-accordions">
+                    <details class="accordion-item" id="accordion-search">
+                        <summary>🔍 Raw Search Results</summary>
+                        <div class="accordion-content" id="raw-search-content"></div>
+                    </details>
+                    <details class="accordion-item" id="accordion-scrape">
+                        <summary>📄 Raw Scraped Content</summary>
+                        <div class="accordion-content" id="raw-scrape-content"></div>
+                    </details>
+                </div>
+
+                <!-- Final Report Card -->
+                <div class="result-card hidden" id="report-card">
+                    <div class="result-header">
+                        <span class="badge orange">📝 Final Research Report</span>
+                        <button class="download-btn" id="download-report-btn">⬇ Download Report (.md)</button>
+                    </div>
+                    <div class="result-body markdown-body" id="report-content"></div>
+                </div>
+
+                <!-- Critic Feedback Card -->
+                <div class="result-card green-border hidden" id="feedback-card">
+                    <div class="result-header">
+                        <span class="badge green">🧐 Critic Evaluation</span>
+                    </div>
+                    <div class="result-body markdown-body" id="feedback-content"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            ResearchMind · Powered by FastAPI & LangChain multi-agent pipeline
+        </footer>
+    </div>
+
+    <!-- Main JS logic -->
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
