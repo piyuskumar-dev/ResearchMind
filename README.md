@@ -1,6 +1,6 @@
 # 🔬 ResearchMind: Multi-Agent AI Research Assistant
 
-ResearchMind is a collaborative multi-agent AI framework built with **LangChain** and **Streamlit** that automates the process of deep research, content curation, report generation, and critic review. By orchestrating a team of specialized agents and chains, ResearchMind fetches real-time web resources, scrapes detailed content, drafts comprehensive reports, and provides structured feedback.
+ResearchMind is a collaborative multi-agent AI framework built with **LangChain** and **FastAPI** that automates deep research, content curation, report generation, and critic review. By orchestrating a team of specialized agents and chains, ResearchMind fetches real-time web resources, scrapes detailed content, drafts comprehensive reports, and provides structured feedback—all streamed in real time to a premium HTML/CSS/JS dashboard.
 
 ---
 
@@ -11,7 +11,8 @@ ResearchMind is a collaborative multi-agent AI framework built with **LangChain*
 *   **Smart Content Scraping**: Parses web resources, removes clutter (scripts, styles, headers, footers), and extracts rich knowledge.
 *   **Structured Report Drafting**: Generates reports containing an Introduction, Key Findings (3-5 points), Conclusion, and bibliography sources.
 *   **Double-Loop Critic Evaluation**: Evaluates reports using a dedicated critic chain that scores out of 10 and provides suggestions for improvement.
-*   **Streamlined Interfaces**: Offers both a clean CLI interface and a gorgeous, responsive, glassmorphism dark-theme Streamlit dashboard.
+*   **Server-Sent Events (SSE) Streaming**: Progress updates, logs, and partial results are streamed instantly from the backend to the UI.
+*   **Premium Zero-Dependency Front-End**: Clean HTML/CSS/JS dashboard utilizing premium typography, HSL-tailored dark color palettes, glassmorphism UI containers, and progress state animations.
 
 ---
 
@@ -37,7 +38,11 @@ graph TD
 
 ## 📁 Repository Structure
 
-*   [`app.py`](file:///Users/piyus_device/Desktop/multi%20agent%20system/app.py): Streamlit application code including custom premium styles, animations, status updates, and interactive components.
+*   [`app.py`](file:///Users/piyus_device/Desktop/multi%20agent%20system/app.py): FastAPI application backend hosting REST API JSON endpoints, SSE streaming streams, and static asset directory mounts.
+*   [`static/`](file:///Users/piyus_device/Desktop/multi%20agent%20system/static/): Frontend assets folder.
+    *   [`static/index.html`](file:///Users/piyus_device/Desktop/multi%20agent%20system/static/index.html): Custom user interface dashboard.
+    *   [`static/css/style.css`](file:///Users/piyus_device/Desktop/multi%20agent%20system/static/css/style.css): Premium dark-theme stylesheet with glassmorphism components.
+    *   [`static/js/script.js`](file:///Users/piyus_device/Desktop/multi%20agent%20system/static/js/script.js): EventSource (SSE) consumer, progress tracking states, and DOM renderer.
 *   [`pipeline.py`](file:///Users/piyus_device/Desktop/multi%20agent%20system/pipeline.py): The core CLI pipeline logic for running the research process step-by-step in the terminal.
 *   [`agents.py`](file:///Users/piyus_device/Desktop/multi%20agent%20system/agents.py): Defines the LangChain agents, chains, prompts, and output structures.
 *   [`tool.py`](file:///Users/piyus_device/Desktop/multi%20agent%20system/tool.py): Custom tool wrappers for Tavily Search and BeautifulSoup-based scraping.
@@ -63,7 +68,7 @@ MODEL=gemma-4-31b-it
 ### 3. Install Dependencies
 Initialize your virtual environment and install the required modules:
 ```bash
-# Optional: Setup virtual environment
+# Setup virtual environment
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
@@ -75,6 +80,16 @@ pip install -r requirements.txt
 
 ## 🚀 How to Run
 
+### Run the Web Dashboard (FastAPI)
+To start the interactive, premium web UI:
+```bash
+python app.py
+```
+*(Or run `uvicorn app:app --reload` directly in your terminal)*
+
+Open the local URL in your browser to interact with the visual dashboard:
+👉 **`http://localhost:8000/`**
+
 ### Run via Command Line (CLI)
 To run the research pipeline directly inside your terminal:
 ```bash
@@ -82,18 +97,11 @@ python pipeline.py
 ```
 *You will be prompted to enter a topic, and output stages will display in the console.*
 
-### Run the Web Dashboard (Streamlit)
-To start the interactive, premium web UI:
-```bash
-streamlit run app.py
-```
-Open the local URL generated (usually `http://localhost:8501`) in your browser to interact with the visual dashboard.
-
 ---
 
 ## 🛠️ Built With
 
 *   [LangChain](https://github.com/langchain-ai/langchain) - LLM Orchestration Framework
-*   [Streamlit](https://streamlit.io/) - Web UI Development
+*   [FastAPI](https://fastapi.tiangolo.com/) - High-performance Web Framework & API Server
 *   [Tavily](https://tavily.com/) - Search API optimized for LLMs
 *   [BeautifulSoup4](https://www.crummy.com/software/BeautifulSoup/) - HTML Scraping and Parsing
